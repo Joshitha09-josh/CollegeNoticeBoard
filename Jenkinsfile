@@ -49,7 +49,11 @@ pipeline {
             steps {
                 echo 'Deploying application to Kubernetes'
 
-                bat '"C:\\Program Files\\Docker\\Docker\\resources\\bin\\kubectl.exe" apply --validate=false -f deployment.yaml'
+                withCredentials([
+                    file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG')
+                ]) {
+                    bat '"C:\\Program Files\\Docker\\Docker\\resources\\bin\\kubectl.exe" apply -f deployment.yaml'
+                }
             }
         }
 
@@ -57,15 +61,13 @@ pipeline {
             steps {
                 echo 'Checking Kubernetes Deployment'
 
-                bat '"C:\\Program Files\\Docker\\Docker\\resources\\bin\\kubectl.exe" get deployment'
-
-                echo 'Checking Kubernetes Pods'
-
-                bat '"C:\\Program Files\\Docker\\Docker\\resources\\bin\\kubectl.exe" get pods'
-
-                echo 'Checking Kubernetes Service'
-
-                bat '"C:\\Program Files\\Docker\\Docker\\resources\\bin\\kubectl.exe" get service'
+                withCredentials([
+                    file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG')
+                ]) {
+                    bat '"C:\\Program Files\\Docker\\Docker\\resources\\bin\\kubectl.exe" get deployment'
+                    bat '"C:\\Program Files\\Docker\\Docker\\resources\\bin\\kubectl.exe" get pods'
+                    bat '"C:\\Program Files\\Docker\\Docker\\resources\\bin\\kubectl.exe" get service'
+                }
             }
         }
     }
