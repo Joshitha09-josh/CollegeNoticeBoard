@@ -2,6 +2,11 @@ pipeline {
 
     agent any
 
+    environment {
+        DOCKER = 'C:\\Program Files\\Docker\\Docker\\resources\\bin\\docker.exe'
+        KUBECTL = 'C:\\Program Files\\Docker\\Docker\\resources\\bin\\kubectl.exe'
+    }
+
     stages {
 
         stage('Clone Code') {
@@ -34,6 +39,7 @@ pipeline {
                 ]) {
 
                     bat '"C:\\Program Files\\Docker\\Docker\\resources\\bin\\docker.exe" login -u %DOCKER_USERNAME% -p %DOCKER_PASSWORD%'
+
                     bat '"C:\\Program Files\\Docker\\Docker\\resources\\bin\\docker.exe" push balaji00002/college-notice-board:v1'
                 }
             }
@@ -41,15 +47,25 @@ pipeline {
 
         stage('Deploy to Kubernetes') {
             steps {
-                bat 'kubectl apply -f deployment.yaml'
+                echo 'Deploying application to Kubernetes'
+
+                bat '"C:\\Program Files\\Docker\\Docker\\resources\\bin\\kubectl.exe" apply -f deployment.yaml'
             }
         }
 
         stage('Verify Kubernetes') {
             steps {
-                bat 'kubectl get deployment'
-                bat 'kubectl get pods'
-                bat 'kubectl get service'
+                echo 'Checking Kubernetes Deployment'
+
+                bat '"C:\\Program Files\\Docker\\Docker\\resources\\bin\\kubectl.exe" get deployment'
+
+                echo 'Checking Kubernetes Pods'
+
+                bat '"C:\\Program Files\\Docker\\Docker\\resources\\bin\\kubectl.exe" get pods'
+
+                echo 'Checking Kubernetes Service'
+
+                bat '"C:\\Program Files\\Docker\\Docker\\resources\\bin\\kubectl.exe" get service'
             }
         }
     }
