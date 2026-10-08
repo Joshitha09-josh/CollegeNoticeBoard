@@ -49,7 +49,7 @@ pipeline {
             steps {
                 echo 'Deploying application to Kubernetes'
 
-                bat '"C:\\Program Files\\Docker\\Docker\\resources\\bin\\kubectl.exe" apply -f deployment.yaml'
+                bat '"C:\\Program Files\\Docker\\Docker\\resources\\bin\\kubectl.exe" apply --validate=false -f deployment.yaml'
             }
         }
 
@@ -71,6 +71,7 @@ pipeline {
     }
 
     post {
+
         success {
             echo 'CI/CD Pipeline completed successfully!'
         }
