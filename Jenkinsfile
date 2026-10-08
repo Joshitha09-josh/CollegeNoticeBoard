@@ -13,13 +13,13 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                bat 'docker build -t balaji00002/college-notice-board:v1 .'
+                bat '"C:\\Program Files\\Docker\\Docker\\resources\\bin\\docker.exe" build -t balaji00002/college-notice-board:v1 .'
             }
         }
 
         stage('Test Application') {
             steps {
-                bat 'docker images balaji00002/college-notice-board:v1'
+                bat '"C:\\Program Files\\Docker\\Docker\\resources\\bin\\docker.exe" images balaji00002/college-notice-board:v1'
             }
         }
 
@@ -33,8 +33,8 @@ pipeline {
                     )
                 ]) {
 
-                    bat 'docker login -u %DOCKER_USERNAME% -p %DOCKER_PASSWORD%'
-                    bat 'docker push balaji00002/college-notice-board:v1'
+                    bat '"C:\\Program Files\\Docker\\Docker\\resources\\bin\\docker.exe" login -u %DOCKER_USERNAME% -p %DOCKER_PASSWORD%'
+                    bat '"C:\\Program Files\\Docker\\Docker\\resources\\bin\\docker.exe" push balaji00002/college-notice-board:v1'
                 }
             }
         }
